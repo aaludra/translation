@@ -1,7 +1,20 @@
 import PyPDF2
 import streamlit as st
 import spacy
+import os
+import subprocess
+import sys
 
+# Check if the models are already downloaded
+try:
+    nlp_en = spacy.load("en_core_web_sm")
+    nlp_nl = spacy.load("nl_core_news_sm")
+except OSError:
+    # Download the required models
+    subprocess.run([sys.executable, "-m", "spacy", "download", "en_core_web_sm"])
+    subprocess.run([sys.executable, "-m", "spacy", "download", "nl_core_news_sm"])
+    nlp_en = spacy.load("en_core_web_sm")
+    nlp_nl = spacy.load("nl_core_news_sm")
 
 def pdf_to_txt(p_file):
     text = ""
@@ -12,12 +25,11 @@ def pdf_to_txt(p_file):
             text += page.extract_text()
     return text
 
-
 def question_to_answer(conv_text, question):
     st.spinner("Searching...")
     doc = nlp(conv_text)
     answers = []
-    #        # Process question
+    # Process question
     question_doc = nlp(question)
     # Find answer by matching question tokens with document tokens
     answer = ""
@@ -30,16 +42,14 @@ def question_to_answer(conv_text, question):
     answers.append(answer)
     return answers
 
-
 st.title("Query")
 st.write()
 txt_file = ""
-option = st.selectbox(
-    "Choose the language...",
-    ("English", "Dutch", "German"))
+option = st.selectbox("Choose the language...", ("English", "Dutch", "German"))
+
 if option == "English":
     user_input = st.text_input(label="Enter the query here...")
-    nlp = spacy.load("en_core_web_sm")
+    nlp = nlp_en
     st.write()
     st.button("Search")
     st.write()
@@ -47,7 +57,7 @@ if option == "English":
     txt_file = pdf_to_txt("Eng_Doc.pdf")
 elif option == "Dutch":
     user_input = st.text_input(label="Voeg hier de vraag in...")
-    nlp = spacy.load("nl_core_news_sm")
+    nlp = nlp_nl
     st.write()
     st.button("Zoekopdracht")
     txt_file = pdf_to_txt("Dutch_Doc.pdf")
@@ -55,7 +65,8 @@ elif option == "Dutch":
     st.spinner("Zoeken...")
 else:
     user_input = st.text_input(label="Geben Sie hier die Abfrage ein...")
-    nlp = spacy.load("nl_core_news_sm")
+    # You'll need to find or create a compatible German language model for spaCy
+    # and add the code to load it here
     st.write()
     st.button("Suchen")
     txt_file = pdf_to_txt("German_doc.pdf")
