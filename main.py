@@ -2,6 +2,7 @@ import PyPDF2
 import streamlit as st
 import spacy
 import en_core_web_sm
+import nl_core_news_sm
 
 
 def pdf_to_txt(p_file):
@@ -48,7 +49,7 @@ if option == "English":
     txt_file = pdf_to_txt("Eng_Doc.pdf")
 elif option == "Dutch":
     user_input = st.text_input(label="Voeg hier de vraag in...")
-    nlp = spacy.load("model\nl_core_news_sm-3.7.0-py3-none-any.whl")
+    nlp = nl_core_news_sm.load()
     st.write()
     st.button("Zoekopdracht")
     txt_file = pdf_to_txt("Dutch_Doc.pdf")
@@ -56,7 +57,7 @@ elif option == "Dutch":
     st.spinner("Zoeken...")
 else:
     user_input = st.text_input(label="Geben Sie hier die Abfrage ein...")
-    nlp = spacy.load("model\nl_core_news_sm-3.7.0-py3-none-any.whl")
+    nlp = nl_core_news_sm.load()
     st.write()
     st.button("Suchen")
     txt_file = pdf_to_txt("German_doc.pdf")
