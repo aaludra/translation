@@ -4,10 +4,7 @@ import PyPDF2
 from transformers import BertTokenizer, BertForQuestionAnswering
 import torch
 
-import os
-
-os.environ["OPENAI_API_KEY"] = 'sk-proj-sytG2gNJxunAeXMiXSw9T3BlbkFJd4O2ioEs12RnmSlnTXxq'
-
+openai.api_key = "sk-proj-sytG2gNJxunAeXMiXSw9T3BlbkFJd4O2ioEs12RnmSlnTXxq"
 pdf_path = "Eng_doc.pdf"
 
 
