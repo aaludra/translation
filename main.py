@@ -4,7 +4,6 @@ import spacy
 import en_core_web_sm
 import nl_core_news_sm
 
-
 def pdf_to_txt(p_file):
     text = ""
     with open(p_file, "rb") as file:
