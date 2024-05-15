@@ -40,12 +40,12 @@ if st.button("Search"):
     end_scores = outputs.end_logits
 
     # Convert logits to probabilities
-    #start_probs = torch.softmax(start_scores, dim=1, dtype=None)
-    #end_probs = torch.softmax(end_scores, dim=1, dtype=None)
+    start_probs = torch.softmax(start_scores, dim=1, dtype=None)
+    end_probs = torch.softmax(end_scores, dim=1, dtype=None)
 
     # Find the answer span with the highest probability
-    start_index = torch.argmax(start_scores)
-    end_index = torch.argmax(end_scores)
+    start_index = torch.argmax(start_probs)
+    end_index = torch.argmax(end_probs)
 
     # Decode answer tokens
     answer_tokens = inputs['input_ids'][0][start_index:end_index + 1]
